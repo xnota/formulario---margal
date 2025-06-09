@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Formulario de Consentimiento</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+    input, textarea, button {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Formulario de Consentimiento - Pista de Patinaje</h2>
+  <form id="formulario">
+    <label>Nombre del responsable</label>
+    <input type="text" name="responsable_nombre" required>
+
+    <label>DNI del responsable</label>
+    <input type="text" name="responsable_dni" required>
+
+    <label>Teléfono</label>
+    <input type="text" name="telefono">
+
+    <label>Email</label>
+    <input type="email" name="email">
+
+    <label>Nombres y DNIs del grupo (uno por línea)</label>
+    <textarea name="personas" placeholder="Ej: Juan Pérez - 12345678&#10;Ana Gómez - 23456789"></textarea>
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <p id="mensaje"></p>
+
+  <script>
+    const form = document.getElementById('formulario');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+
+      const obj = {};
+      data.forEach((value, key) => obj[key] = value);
+
+      const response = await fetch("https://script.google.com/macros/s/AKfycbxAAsyg7ISKOwrj7oibkgf5CkH4ZRyexSL8IrU2V-fxVSckEWyHbM0GwXypNMyUmldL/exec", {
+        method: 'POST',
+        body: new URLSearchParams(obj),
+      });
+
+      if (response.ok) {
+        document.getElementById('mensaje').innerText = "Formulario enviado correctamente.";
+        form.reset();
+      } else {
+        document.getElementById('mensaje').innerText = "Hubo un error al enviar el formulario.";
+      }
+    });
+  </script>
+</body>
+</html>
